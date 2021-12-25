@@ -1,0 +1,102 @@
+/**
+    Author : Md. Atikur Rahman
+    Node : first see input data and than
+    using long long
+*/
+#include<bits/stdc++.h>
+
+#define fread freopen("in.txt","r",stdin)
+#define fwrite freopen("out.txt","w",stdout)
+#define FAST ios_base::sync_with_stdio(false);cin.tie(NULL);
+#define test scanf("%d",&tt)
+#define loop for(int t = 1 ; t<=tt ; t++)
+#define ll long long
+#define MAX 200005
+#define MOD 1000000007
+#define PI acos(-1)
+#define pii pair<int , int>
+
+using namespace std;
+
+int Arr[MAX];
+int pos=0;
+int sc=0;
+void nfa(int st, string str)
+{
+    int j = 0,sp,fs[MAX],fsc=0;
+	sp=st;
+	sc=st;
+	while(j<str.size())
+	{
+	    if(str[j]>='a' && str[j]<='z')
+	    {
+	        Arr[pos++]=sp;
+            Arr[pos++]=str[j];
+            Arr[pos++]=++sc;
+		}
+        if(str[j]=='.')
+		{
+            sp = sc;
+            Arr[pos++]=sc;
+            Arr[pos++]=238;
+            Arr[pos++]=++sc;
+            sp=sc;
+		 }
+        if(str[j]=='|')
+        {
+            sp=st;
+            fs[fsc++]=sc;
+        }
+        if(str[j]=='*')
+		{
+            Arr[pos++]=sc;
+            Arr[pos++]=238;
+            Arr[pos++]=sp;
+            Arr[pos++]=sp;
+            Arr[pos++]=238;
+            Arr[pos++]=sc;
+        }
+//        if (*s=='(')
+//		{
+//            char ps[50];
+//            int i=0,flag=1;
+//            s++;
+//            while(flag!=0)
+//            {
+//                ps[i++]=*s;
+//                if (*s=='(')
+//                flag++;
+//                if (*s==')')
+//                flag--;
+//                s++;
+//            }
+//            ps[--i]='\0';
+//            nfa(sc,pos,ps);
+//            s--;
+//		}
+        j++;
+	}
+	sc++;
+    for(int i=0;i<fsc;i++)
+    {
+        Arr[pos++]=fs[i];
+        Arr[pos++]=238;
+        Arr[pos++]=sc;
+    }
+    Arr[pos++]=sc-1;
+    Arr[pos++]=238;
+    Arr[pos++]=sc;
+}
+int main()
+{
+    int i;
+	string str;
+	printf("enter the regular expression :");
+	cin>>str;
+	nfa(1,str);
+	printf("\nstate  input  state\n");
+	for(i=0;i<pos;i=i+3)
+		 printf("%d     --%c-->      %d\n",Arr[i],Arr[i+1],Arr[i+2]);
+	printf("\n");
+	return 0;
+}
